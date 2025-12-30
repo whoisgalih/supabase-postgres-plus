@@ -11,7 +11,7 @@ fi
 
 # 3. Authenticate Cachix (token via env)
 if [ -n "$CACHIX_AUTH_TOKEN" ]; then
-  echo "$CACHIX_AUTH_TOKEN" | cachix authtoken
+  echo "$CACHIX_AUTH_TOKEN" | cachix authtoken --stdin
 fi
 
 # 4. Enable cache
