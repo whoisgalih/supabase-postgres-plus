@@ -1,6 +1,6 @@
 { self, pkgs }:
 let
-  pname = "plan_filter";
+  pname = "pg_plan_filter";
   inherit (pkgs) lib;
   installedExtension =
     postgresMajorVersion:
