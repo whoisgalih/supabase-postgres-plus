@@ -25,6 +25,11 @@ services:
 
     entrypoint: /work/entrypoint.sh
 
+    deploy:
+      resources:
+        limits:
+          cpus: "3.0"     
+          memory: 20g
 
 volumes:
   nix-store:
