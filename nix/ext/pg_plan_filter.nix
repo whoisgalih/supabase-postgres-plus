@@ -8,7 +8,9 @@
 }:
 
 let
-  pname = "plan_filter";
+  pname = "pg_plan_filter";
+  moduleName = "plan_filter";
+
   build =
     version: rev: hash:
     stdenv.mkDerivation rec {
@@ -25,10 +27,12 @@ let
       installPhase = ''
         runHook preInstall
 
+        mkdir -p $out/lib
         mkdir -p $out/share/postgresql/extension
 
-        # Install versioned library
-        install -Dm755 ${pname}${postgresql.dlSuffix} $out/lib/${pname}-${version}${postgresql.dlSuffix}
+        # Install versioned library (upstream builds plan_filter${postgresql.dlSuffix})
+        install -Dm755 ${moduleName}${postgresql.dlSuffix} \
+          $out/lib/${moduleName}-${version}${postgresql.dlSuffix}
 
         if [[ "${version}" == "${latestVersion}" ]]; then
           cp *.sql $out/share/postgresql/extension/
@@ -44,6 +48,7 @@ let
         license = licenses.postgresql;
       };
     };
+
   allVersions = (builtins.fromJSON (builtins.readFile ./versions.json)).pg_plan_filter;
   supportedVersions = lib.filterAttrs (
     _: value: builtins.elem (lib.versions.major postgresql.version) value.postgresql
@@ -63,12 +68,15 @@ pkgs.buildEnv {
     "/lib"
     "/share/postgresql/extension"
   ];
+
   postBuild = ''
-    ln -sfn ${pname}-${latestVersion}${postgresql.dlSuffix} $out/lib/${pname}${postgresql.dlSuffix}
+    # Provide an unversioned .so for runtime loading (LOAD 'plan_filter', shared_preload_libraries=plan_filter)
+    ln -sfn ${moduleName}-${latestVersion}${postgresql.dlSuffix} \
+      $out/lib/${moduleName}${postgresql.dlSuffix}
 
     # checks
     (set -x
-       test "$(ls -A $out/lib/${pname}*${postgresql.dlSuffix} | wc -l)" = "${
+       test "$(ls -A $out/lib/${moduleName}*${postgresql.dlSuffix} | wc -l)" = "${
          toString (numberOfVersions + 1)
        }"
     )

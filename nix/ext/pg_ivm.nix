@@ -11,8 +11,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "sraoss";
     repo = "pg_ivm";
-    rev = "refs/tags/v${version}";
-    hash = ""; # fill via the first nix build attempt
+    rev = (builtins.fromJSON (builtins.readFile ./versions.json)).pg_ivm."${version}".revision; 
+    hash = (builtins.fromJSON (builtins.readFile ./versions.json)).pg_ivm."${version}".hash;
   };
 
   buildInputs = [ postgresql ];
