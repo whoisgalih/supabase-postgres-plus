@@ -687,7 +687,7 @@ default_text_search_config = 'pg_catalog.english'
 #local_preload_libraries = ''
 #session_preload_libraries = ''
 
-shared_preload_libraries = 'pg_stat_statements, pgaudit, plpgsql, plpgsql_check, pg_cron, pg_net, pgsodium, timescaledb, auto_explain, pg_tle, plan_filter, supabase_vault'	# (change requires restart)
+shared_preload_libraries = 'pg_stat_statements, pgaudit, plpgsql, plpgsql_check, pg_cron, pg_net, pgsodium, timescaledb, auto_explain, pg_tle, plan_filter, supabase_vault, pg_ivm'	# (change requires restart)
 jit_provider = 'llvmjit'		# JIT library to use
 
 # - Other Defaults -
@@ -761,4 +761,3 @@ include_dir = '/etc/postgresql-custom/conf.d'  # include files ending in '.conf'
 #------------------------------------------------------------------------------
 
 # Add settings for extensions here
-shared_preload_libraries = 'pg_ivm'
