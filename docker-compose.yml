@@ -1,0 +1,28 @@
+services:
+  nix:
+    image: nixos/nix:latest
+    container_name: nix-builder
+    privileged: true
+    restart: unless-stopped
+
+    volumes:
+      # Persistent Nix cache
+      - nix-store:/nix/store
+      - nix-var:/nix/var
+
+      # Repo source
+      - .:/work
+
+      # Cachix config (DO NOT COMMIT)
+      - ./cachix:/root/.config/cachix
+
+    working_dir: /work
+
+    environment:
+      - NIX_CONFIG=experimental-features = nix-command flakes
+
+    command: sleep infinity
+
+volumes:
+  nix-store:
+  nix-var:
