@@ -6,26 +6,16 @@ services:
     restart: unless-stopped
 
     volumes:
-      # Persistent Nix cache  
       - nix-store:/nix/store
       - nix-var:/nix/var
-
-      # Repo source
       - .:/work
-
-      # Cachix config (DO NOT COMMIT)
       - ./cachix:/root/.config/cachix
 
     working_dir: /work
 
     environment:
       NIX_CONFIG: experimental-features = nix-command flakes
-      CACHIX_CACHE_NAME: supabase-postgres-plus
+      CACHIX_CACHE_NAME: your-cache-name
       CACHIX_AUTH_TOKEN: ${CACHIX_AUTH_TOKEN}
 
     entrypoint: /work/entrypoint.sh
-
-
-volumes:
-  nix-store:
-  nix-var:

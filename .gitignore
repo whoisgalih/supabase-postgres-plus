@@ -35,3 +35,4 @@ nixos.qcow2
 .clj-kondo
 
 cachix/
+.env
